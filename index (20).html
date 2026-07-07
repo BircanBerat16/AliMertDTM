@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali Mert DTM — Klima, Isı Pompası ve Beyaz Eşya Servisi | Muğla</title>
+<meta name="description" content="Muğla'da klima montajı, tamir, bakım, temizlik; ısı pompası montaj ve bakımı, petek temizliği, beyaz eşya tamiri ve klima alt yapı tesisatı. Ali Mert DTM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230F6FDE'/><path d='M16 6v20M8 9l16 14M24 9L8 23' stroke='white' stroke-width='2.6' stroke-linecap='round'/></svg>">
+<style>
+:root{
+  --blue:#0F6FDE;
+  --blue-dark:#0B4EA0;
+  --navy:#0A1F33;
+  --ice:#EAF4FE;
+  --ice-2:#F5FAFF;
+  --black:#0D0D0F;
+  --white:#FFFFFF;
+  --gray:#5B6B7B;
+  --line:#D8E6F4;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;color:var(--navy);background:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.disp{font-family:'Archivo',sans-serif}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+.container{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ===== HEADER ===== */
+header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo svg{width:40px;height:40px}
+.logo-text{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.05}
+.logo-text span{display:block;font-size:11px;font-weight:700;letter-spacing:.22em;color:var(--blue)}
+.nav-links{display:flex;gap:28px;font-weight:600;font-size:15px}
+.nav-links a{color:var(--navy);transition:color .2s}
+.nav-links a:hover{color:var(--blue)}
+.nav-cta{background:var(--black);color:#fff;padding:11px 20px;border-radius:99px;font-weight:700;font-size:14px;transition:background .2s}
+.nav-cta:hover{background:var(--blue)}
+.burger{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.burger span{display:block;width:24px;height:2.5px;background:var(--navy);margin:5px 0;border-radius:2px}
+
+/* ===== HERO ===== */
+.hero{position:relative;background:linear-gradient(160deg,var(--navy) 0%,#0C3260 55%,var(--blue-dark) 100%);color:#fff;overflow:hidden}
+.hero-inner{position:relative;z-index:2;padding:90px 0 110px;max-width:720px}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:7px 16px;border-radius:99px;font-size:13px;font-weight:600;letter-spacing:.04em;margin-bottom:26px}
+.hero .eyebrow .dot{width:8px;height:8px;border-radius:50%;background:#3FD07E;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:clamp(34px,5.4vw,60px);font-weight:900;line-height:1.06;letter-spacing:-.025em;font-stretch:95%}
+.hero h1 em{font-style:normal;color:#7CC2FF}
+.hero p{margin:22px 0 34px;font-size:17px;color:#C6DCF5;max-width:540px}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:99px;font-weight:700;font-size:15px;transition:transform .15s,box-shadow .2s;font-family:'Manrope',sans-serif}
+.btn:hover{transform:translateY(-2px)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 8px 24px rgba(15,111,222,.4)}
+.btn-white{background:#fff;color:var(--navy)}
+.btn-wa{background:#22B95B;color:#fff}
+/* soğuk hava akışı */
+.airflow{position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.5}
+.airflow path{fill:none;stroke:rgba(124,194,255,.35);stroke-width:2;stroke-dasharray:14 26;animation:flow 9s linear infinite}
+.airflow path:nth-child(2){animation-duration:13s;stroke:rgba(124,194,255,.22)}
+.airflow path:nth-child(3){animation-duration:17s;stroke:rgba(124,194,255,.14)}
+@keyframes flow{to{stroke-dashoffset:-400}}
+@media (prefers-reduced-motion:reduce){.airflow path,.hero .eyebrow .dot{animation:none}}
+
+/* hızlı şerit */
+.strip{background:var(--black);color:#fff;padding:16px 0}
+.strip .container{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;font-size:14px;font-weight:600}
+.strip div{display:flex;align-items:center;gap:9px}
+.strip svg{width:18px;height:18px;flex-shrink:0;stroke:#7CC2FF}
+
+/* ===== BÖLÜMLER ===== */
+section{padding:84px 0}
+.sec-head{max-width:620px;margin-bottom:48px}
+.sec-head .tag{display:inline-block;color:var(--blue);font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:12px;font-family:'Archivo',sans-serif}
+.sec-head h2{font-size:clamp(28px,3.6vw,42px);font-weight:800;letter-spacing:-.02em;line-height:1.12}
+.sec-head p{margin-top:14px;color:var(--gray);font-size:16px}
+
+/* HİZMETLER */
+#hizmetler{background:var(--ice-2)}
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.svc{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 28px;transition:box-shadow .25s,transform .25s;position:relative;overflow:hidden}
+.svc:hover{box-shadow:0 16px 40px rgba(10,31,51,.1);transform:translateY(-4px)}
+.svc:hover .svc-ic{background:var(--blue);color:#fff}
+.svc-ic{width:54px;height:54px;border-radius:13px;background:var(--ice);color:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:background .25s,color .25s}
+.svc-ic svg{width:28px;height:28px}
+.svc h3{font-size:19px;font-weight:800;letter-spacing:-.01em;margin-bottom:10px}
+.svc p{color:var(--gray);font-size:14.5px;margin-bottom:18px}
+.svc a{color:var(--blue);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.svc a:hover{gap:10px}
+.svc a{transition:gap .2s}
+
+/* ÜRÜNLER */
+.filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px}
+.chip{padding:9px 18px;border-radius:99px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:14px;cursor:pointer;color:var(--navy);transition:all .2s;font-family:'Manrope',sans-serif}
+.chip.active,.chip:hover{background:var(--navy);color:#fff;border-color:var(--navy)}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:22px}
+.prod{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:box-shadow .25s,transform .25s;display:flex;flex-direction:column}
+.prod:hover{box-shadow:0 14px 36px rgba(10,31,51,.12);transform:translateY(-3px)}
+.prod-img{aspect-ratio:4/3;background:var(--ice-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.prod-img img{width:100%;height:100%;object-fit:cover}
+.prod-img .noimg{color:#B9CEE2}
+.prod-body{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
+.prod-brand{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;font-family:'Archivo',sans-serif}
+.prod h3{font-size:16.5px;font-weight:700;margin:5px 0 8px;line-height:1.3}
+.prod .desc{font-size:13.5px;color:var(--gray);flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prod-foot{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.prod-price{font-family:'Archivo',sans-serif;font-weight:800;font-size:19px}
+.prod-price small{font-size:12px;color:var(--gray);font-weight:600}
+.prod-ask{background:var(--ice);color:var(--blue);padding:9px 15px;border-radius:99px;font-weight:700;font-size:13px;transition:all .2s}
+.prod-ask:hover{background:var(--blue);color:#fff}
+.prod-empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--gray);background:var(--ice-2);border-radius:var(--radius);border:1.5px dashed var(--line)}
+
+/* NEDEN BİZ */
+#neden{background:var(--navy);color:#fff}
+#neden .sec-head h2{color:#fff}
+#neden .sec-head p{color:#A8C4E4}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.why{border:1px solid rgba(255,255,255,.14);border-radius:var(--radius);padding:26px;background:rgba(255,255,255,.04)}
+.why .num{font-family:'Archivo',sans-serif;font-weight:900;font-size:15px;color:#7CC2FF;margin-bottom:12px}
+.why h3{font-size:17px;font-weight:800;margin-bottom:8px}
+.why p{font-size:14px;color:#A8C4E4}
+
+/* İLETİŞİM */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.c-item{display:flex;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+.c-item:last-child{border-bottom:none}
+.c-ic{width:46px;height:46px;border-radius:12px;background:var(--ice);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c-ic svg{width:22px;height:22px}
+.c-item h4{font-size:15px;font-weight:800;margin-bottom:3px}
+.c-item p,.c-item a{font-size:14.5px;color:var(--gray)}
+.c-item a:hover{color:var(--blue)}
+.contact-card{background:var(--ice-2);border:1px solid var(--line);border-radius:var(--radius);padding:34px}
+.contact-card h3{font-size:22px;font-weight:800;margin-bottom:8px}
+.contact-card>p{color:var(--gray);font-size:14.5px;margin-bottom:24px}
+.contact-card .btn{width:100%;justify-content:center;margin-bottom:12px}
+
+/* FOOTER */
+footer{background:var(--black);color:#8A96A3;padding:44px 0;font-size:14px}
+footer .container{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+footer .f-logo{color:#fff;font-family:'Archivo',sans-serif;font-weight:800;font-size:16px}
+footer .f-logo span{color:var(--blue)}
+
+/* WhatsApp yüzen buton */
+.wa-float{position:fixed;bottom:22px;right:22px;z-index:99;width:58px;height:58px;border-radius:50%;background:#22B95B;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(34,185,91,.45);transition:transform .2s}
+.wa-float:hover{transform:scale(1.08)}
+.wa-float svg{width:30px;height:30px;fill:#fff}
+
+@media (max-width:820px){
+  .nav-links{display:none;position:absolute;top:72px;left:0;right:0;background:#fff;flex-direction:column;padding:20px;gap:18px;border-bottom:1px solid var(--line)}
+  .nav-links.open{display:flex}
+  .burger{display:block}
+  .nav-cta{display:none}
+  .contact-wrap{grid-template-columns:1fr}
+  section{padding:60px 0}
+  .hero-inner{padding:64px 0 80px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="#" class="logo">
+      <svg viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#0F6FDE"/><path d="M16 6v20M8 9l16 14M24 9L8 23" stroke="white" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <div class="logo-text">ALİ MERT<span>DTM · MUĞLA</span></div>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#hizmetler">Hizmetler</a>
+      <a href="#urunler">Ürünler</a>
+      <a href="#neden">Neden Biz</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+    <a href="tel:+905322832482" class="nav-cta">Hemen Ara</a>
+    <button class="burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="hero">
+  <svg class="airflow" viewBox="0 0 1200 500" preserveAspectRatio="none">
+    <path d="M-50,120 C200,60 400,180 650,110 S1050,60 1250,130"/>
+    <path d="M-50,260 C250,200 450,320 700,250 S1100,200 1250,270"/>
+    <path d="M-50,400 C200,340 420,450 680,380 S1080,340 1250,410"/>
+  </svg>
+  <div class="container hero-inner">
+    <div class="eyebrow"><span class="dot"></span> Muğla ve çevresinde aynı gün servis</div>
+    <h1>Eviniz her mevsim<br><em>doğru sıcaklıkta.</em></h1>
+    <p>Klima montajından ısı pompasına, beyaz eşya tamirinden alt yapı tesisatına — tek numarayla ulaşabileceğiniz yetkili servis kalitesi.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/905322832482?text=Merhaba,%20servis%20talebim%20var." class="btn btn-wa" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l1-1.1c.2-.3.4-.2.7-.1l2.1 1c.3.1.5.2.6.4 0 .1 0 .7-.2 1.2Z"/></svg>
+        WhatsApp'tan Yaz
+      </a>
+      <a href="#urunler" class="btn btn-white">Ürünleri İncele</a>
+    </div>
+  </div>
+</div>
+
+<div class="strip">
+  <div class="container">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg> Aynı gün servis imkanı</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg> Garantili işçilik</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l3 6 6 1-4.5 4.4L18 20l-6-3-6 3 1.5-6.6L3 9l6-1z"/></svg> Orijinal yedek parça</div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 5h18M3 12h18M3 19h18"/></svg> Şeffaf fiyatlandırma</div>
+  </div>
+</div>
+
+<section id="hizmetler">
+  <div class="container">
+    <div class="sec-head">
+      <span class="tag">Hizmetlerimiz</span>
+      <h2>Soğutmadan ısıtmaya, montajdan bakıma</h2>
+      <p>Beş ana hizmet kolunda, keşiften teslime kadar tüm süreci kendi ekibimizle yürütüyoruz.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14.7 6.3a5 5 0 1 0 0 7.1M3 21l6-6"/><path d="M9 15l-1.5 1.5"/></svg></div>
+        <h3>Klima Tamir · Bakım · Temizlik</h3>
+        <p>Arıza tespiti, gaz dolumu, filtre ve iç ünite hijyen temizliği. Periyodik bakımla kliманızın ömrünü uzatın, faturanızı düşürün.</p>
+        <a href="https://wa.me/905322832482?text=Klima%20tamir/bak%C4%B1m%20talebim%20var.">Teklif al →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 3v3M12 18v3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M3 12h3M18 12h3M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/><circle cx="12" cy="12" r="3.2"/></svg></div>
+        <h3>Isı Pompası Montaj · Bakım · Petek Temizliği</h3>
+        <p>Yüksek verimli ısı pompası kurulumu, sezonluk bakım ve kimyasal petek temizliği ile maksimum ısıtma performansı.</p>
+        <a href="https://wa.me/905322832482?text=Is%C4%B1%20pompas%C4%B1%20talebim%20var.">Teklif al →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="7" rx="2"/><path d="M7 8.5h6M8 16c0 1.5-1 2-1 3.5M12 16c0 1.5-1 2-1 3.5M16 16c0 1.5-1 2-1 3.5"/></svg></div>
+        <h3>Klima Montajı</h3>
+        <p>Split, multi-split ve VRF sistemlerde standartlara uygun montaj. Keşif, boru hattı, vakum ve devreye alma dahil.</p>
+        <a href="https://wa.me/905322832482?text=Klima%20montaj%20talebim%20var.">Teklif al →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="5" y="2.5" width="14" height="19" rx="2"/><circle cx="12" cy="13.5" r="4"/><path d="M8 6h3"/></svg></div>
+        <h3>Beyaz Eşya Tamir · Bakım</h3>
+        <p>Çamaşır makinesi, bulaşık makinesi, buzdolabı ve fırın arızalarında yerinde tespit ve hızlı onarım.</p>
+        <a href="https://wa.me/905322832482?text=Beyaz%20e%C5%9Fya%20servis%20talebim%20var.">Teklif al →</a>
+      </div>
+      <div class="svc">
+        <div class="svc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6M4 20h16"/></svg></div>
+        <h3>Klima Alt Yapı Tesisatı</h3>
+        <p>İnşaat ve tadilat aşamasında bakır boru, drenaj ve elektrik alt yapısının projeye uygun döşenmesi.</p>
+        <a href="https://wa.me/905322832482?text=Klima%20alt%20yap%C4%B1%20tesisat%C4%B1%20talebim%20var.">Teklif al →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="urunler">
+  <div class="container">
+    <div class="sec-head">
+      <span class="tag">Ürünler</span>
+      <h2>Satışını yaptığımız cihazlar</h2>
+      <p>Tüm ürünlerde montaj dahil fiyat için bize ulaşın.</p>
+    </div>
+    <div class="filter-row" id="filterRow">
+      <button class="chip active" data-cat="all">Tümü</button>
+    </div>
+    <div class="prod-grid" id="prodGrid">
+      <div class="prod-empty">Ürünler yükleniyor…</div>
+    </div>
+  </div>
+</section>
+
+<section id="neden">
+  <div class="container">
+    <div class="sec-head">
+      <span class="tag" style="color:#7CC2FF">Neden Ali Mert DTM</span>
+      <h2>İşini bilen ekip, temiz işçilik</h2>
+      <p>Muğla'da yılların saha tecrübesiyle, her işi kendi işimiz gibi yapıyoruz.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why"><div class="num">01</div><h3>Yerinde ücretsiz keşif</h3><p>Montaj ve tesisat işlerinde önce gelir, ölçer, net fiyat veririz. Sürpriz yok.</p></div>
+      <div class="why"><div class="num">02</div><h3>Garantili işçilik</h3><p>Yaptığımız her montaj ve tamiratın arkasındayız. İşçilik garantisi belgeli.</p></div>
+      <div class="why"><div class="num">03</div><h3>Hızlı dönüş</h3><p>WhatsApp veya telefonla ulaşın, aynı gün içinde planlama yapalım.</p></div>
+      <div class="why"><div class="num">04</div><h3>Orijinal parça</h3><p>Tamiratlarda yalnızca orijinal veya muadil onaylı yedek parça kullanırız.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="iletisim">
+  <div class="container">
+    <div class="sec-head">
+      <span class="tag">İletişim</span>
+      <h2>Bize ulaşın</h2>
+    </div>
+    <div class="contact-wrap">
+      <div>
+        <div class="c-item">
+          <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <div><h4>Adres</h4><p>Gökova Mah. Aykan Şeker Sok. No: 1/A<br>Muğla</p></div>
+        </div>
+        <div class="c-item">
+          <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg></div>
+          <div><h4>Telefon</h4><a href="tel:+905322832482">0 (532) 283 24 82</a></div>
+        </div>
+        <div class="c-item">
+          <div class="c-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <div><h4>Çalışma Saatleri</h4><p>Pazartesi – Cumartesi · 08:30 – 19:00</p></div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <h3>Hemen teklif alın</h3>
+        <p>Arızanızı veya talebinizi kısaca yazın, en kısa sürede dönüş yapalım.</p>
+        <a href="https://wa.me/905322832482?text=Merhaba,%20teklif%20almak%20istiyorum." class="btn btn-wa" target="_blank" rel="noopener">WhatsApp'tan Yaz</a>
+        <a href="tel:+905322832482" class="btn btn-blue">Telefonla Ara</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="f-logo">ALİ MERT <span>DTM</span></div>
+    <div>© 2026 Ali Mert DTM · Muğla — Tüm hakları saklıdır.</div>
+  </div>
+</footer>
+
+<a class="wa-float" href="https://wa.me/905322832482?text=Merhaba,%20servis%20talebim%20var." target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.9 2.1c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.4-.1.7.2.3.9 1.5 2 2.4 1.4 1.2 2.5 1.6 2.9 1.7.3.2.5.1.7-.1l1-1.1c.2-.3.4-.2.7-.1l2.1 1c.3.1.5.2.6.4 0 .1 0 .7-.2 1.2Z"/></svg>
+</a>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ================================================================
+   FIREBASE AYARLARI — Firebase konsolundan kendi config'ini yapıştır
+   ================================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDNKMz6pg2dUt4QGnEhAnKNIptB9YrfHsA",
+  authDomain: "alimert-dtm.firebaseapp.com",
+  projectId: "alimert-dtm",
+  storageBucket: "alimert-dtm.firebasestorage.app",
+  messagingSenderId: "441500080218",
+  appId: "1:441500080218:web:4c3a676378d9b0b7aa2063"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const grid = document.getElementById('prodGrid');
+const filterRow = document.getElementById('filterRow');
+let allProducts = [];
+
+const fmt = new Intl.NumberFormat('tr-TR');
+
+function render(cat){
+  const list = cat === 'all' ? allProducts : allProducts.filter(p => p.category === cat);
+  if(!list.length){
+    grid.innerHTML = '<div class="prod-empty">Bu kategoride henüz ürün eklenmedi.</div>';
+    return;
+  }
+  grid.innerHTML = list.map(p => `
+    <div class="prod">
+      <div class="prod-img">${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : '<span class="noimg">Görsel yok</span>'}</div>
+      <div class="prod-body">
+        ${p.brand ? `<div class="prod-brand">${p.brand}</div>` : ''}
+        <h3>${p.name}</h3>
+        ${p.desc ? `<div class="desc">${p.desc}</div>` : ''}
+        <div class="prod-foot">
+          <div class="prod-price">${p.price ? fmt.format(p.price) + ' ₺' : '<small>Fiyat için arayın</small>'}</div>
+          <a class="prod-ask" href="https://wa.me/905322832482?text=${encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">Sor</a>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function buildFilters(){
+  const cats = [...new Set(allProducts.map(p => p.category).filter(Boolean))];
+  cats.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'chip';
+    b.dataset.cat = c;
+    b.textContent = c;
+    filterRow.appendChild(b);
+  });
+  filterRow.addEventListener('click', e => {
+    const btn = e.target.closest('.chip');
+    if(!btn) return;
+    filterRow.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+    btn.classList.add('active');
+    render(btn.dataset.cat);
+  });
+}
+
+async function load(){
+  try{
+    const snap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
+    allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    buildFilters();
+    render('all');
+  }catch(err){
+    console.error(err);
+    grid.innerHTML = '<div class="prod-empty">Ürünler şu an yüklenemedi. Firebase ayarlarını kontrol edin.</div>';
+  }
+}
+load();
+
+// Mobil menü
+document.getElementById('burger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(a =>
+  a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open'))
+);
+</script>
+</body>
+</html>

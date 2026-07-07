@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yönetici Paneli — Ali Mert DTM</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#0F6FDE;--navy:#0A1F33;--ice:#EAF4FE;--ice2:#F5FAFF;--black:#0D0D0F;--gray:#5B6B7B;--line:#D8E6F4;--red:#DE3B3B;--green:#1EA05A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Manrope',sans-serif;background:var(--ice2);color:var(--navy);line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Archivo',sans-serif;letter-spacing:-.01em}
+button{font-family:'Manrope',sans-serif;cursor:pointer}
+input,select,textarea{font-family:'Manrope',sans-serif;font-size:14.5px;width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--navy)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue)}
+label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
+.hidden{display:none!important}
+
+/* GİRİŞ */
+#loginView{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login-box{background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 50px rgba(10,31,51,.08)}
+.login-box h1{font-size:22px;margin-bottom:4px}
+.login-box .sub{color:var(--gray);font-size:14px;margin-bottom:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border:none;border-radius:10px;font-weight:700;font-size:14.5px;transition:opacity .15s}
+.btn:hover{opacity:.88}
+.btn-blue{background:var(--blue);color:#fff;width:100%;margin-top:20px}
+.btn-dark{background:var(--black);color:#fff}
+.btn-ghost{background:var(--ice);color:var(--blue)}
+.err{background:#FDECEC;color:var(--red);padding:10px 14px;border-radius:10px;font-size:13.5px;margin-top:14px;font-weight:600}
+
+/* PANEL */
+#panelView{max-width:1080px;margin:0 auto;padding:24px 20px 80px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.topbar h1{font-size:21px}
+.topbar h1 span{color:var(--blue)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.stat .v{font-family:'Archivo',sans-serif;font-weight:900;font-size:26px}
+.stat .l{font-size:12.5px;color:var(--gray);font-weight:600}
+
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;margin-bottom:24px}
+.card h2{font-size:17px;margin-bottom:4px}
+.card .sub{color:var(--gray);font-size:13.5px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}
+.full{grid-column:1/-1}
+.img-preview{margin-top:10px;width:110px;height:82px;border-radius:10px;object-fit:cover;border:1px solid var(--line)}
+.form-actions{display:flex;gap:10px;margin-top:22px}
+
+/* ÜRÜN LİSTESİ */
+.p-row{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}
+.p-row:last-child{border-bottom:none}
+.p-thumb{width:64px;height:50px;border-radius:8px;object-fit:cover;background:var(--ice);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#B9CEE2;font-size:11px;overflow:hidden}
+.p-thumb img{width:100%;height:100%;object-fit:cover}
+.p-info{flex:1;min-width:0}
+.p-info .name{font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-info .meta{font-size:12.5px;color:var(--gray)}
+.p-price{font-family:'Archivo',sans-serif;font-weight:800;font-size:15px;white-space:nowrap}
+.p-actions{display:flex;gap:8px}
+.icon-btn{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:700;color:var(--navy)}
+.icon-btn:hover{border-color:var(--blue);color:var(--blue)}
+.icon-btn.del:hover{border-color:var(--red);color:var(--red)}
+.empty{text-align:center;padding:40px;color:var(--gray);font-size:14px}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--black);color:#fff;padding:13px 24px;border-radius:99px;font-size:14px;font-weight:600;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+@media(max-width:640px){.form-grid{grid-template-columns:1fr}.p-price{display:none}}
+</style>
+</head>
+<body>
+
+<!-- GİRİŞ EKRANI -->
+<div id="loginView">
+  <div class="login-box">
+    <h1>ALİ MERT <span style="color:var(--blue)">DTM</span></h1>
+    <div class="sub">Yönetici Paneli</div>
+    <label>E-posta</label>
+    <input type="email" id="email" autocomplete="username">
+    <label>Şifre</label>
+    <input type="password" id="pass" autocomplete="current-password">
+    <button class="btn btn-blue" id="loginBtn">Giriş Yap</button>
+    <div class="err hidden" id="loginErr"></div>
+  </div>
+</div>
+
+<!-- PANEL -->
+<div id="panelView" class="hidden">
+  <div class="topbar">
+    <h1>ALİ MERT <span>DTM</span> · Ürün Yönetimi</h1>
+    <button class="btn btn-ghost" id="logoutBtn">Çıkış</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="v" id="stTotal">0</div><div class="l">Toplam Ürün</div></div>
+    <div class="stat"><div class="v" id="stCats">0</div><div class="l">Kategori</div></div>
+  </div>
+
+  <div class="card">
+    <h2 id="formTitle">Yeni Ürün Ekle</h2>
+    <div class="sub">Doldur ve kaydet — site anında güncellenir.</div>
+    <div class="form-grid">
+      <div>
+        <label>Ürün Adı *</label>
+        <input id="fName" placeholder="Örn: 12000 BTU Inverter Klima">
+      </div>
+      <div>
+        <label>Marka</label>
+        <input id="fBrand" placeholder="Örn: Daikin">
+      </div>
+      <div>
+        <label>Kategori *</label>
+        <input id="fCat" list="catList" placeholder="Örn: Klima, Isı Pompası…">
+        <datalist id="catList"></datalist>
+      </div>
+      <div>
+        <label>Fiyat (₺) — boş bırakılırsa "Fiyat için arayın" yazar</label>
+        <input id="fPrice" type="number" min="0" placeholder="Örn: 24500">
+      </div>
+      <div class="full">
+        <label>Açıklama</label>
+        <textarea id="fDesc" rows="2" placeholder="Kısa ürün açıklaması"></textarea>
+      </div>
+      <div class="full">
+        <label>Ürün Görseli (Cloudinary'e yüklenir)</label>
+        <input type="file" id="fImg" accept="image/*">
+        <img id="imgPrev" class="img-preview hidden">
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-dark" id="saveBtn">Kaydet</button>
+      <button class="btn btn-ghost hidden" id="cancelBtn">İptal</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Ürünler</h2>
+    <div id="prodList"><div class="empty">Yükleniyor…</div></div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ================================================================
+   FIREBASE AYARLARI — index.html ile AYNI config'i buraya yapıştır
+   ================================================================ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDNKMz6pg2dUt4QGnEhAnKNIptB9YrfHsA",
+  authDomain: "alimert-dtm.firebaseapp.com",
+  projectId: "alimert-dtm",
+  storageBucket: "alimert-dtm.firebasestorage.app",
+  messagingSenderId: "441500080218",
+  appId: "1:441500080218:web:4c3a676378d9b0b7aa2063"
+};
+
+/* ================================================================
+   CLOUDINARY AYARLARI — kendi cloud adını ve unsigned preset'ini gir
+   ================================================================ */
+const CLOUD_NAME = "dplns9y0e";
+const UPLOAD_PRESET = "CambelTekstil";
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const $ = id => document.getElementById(id);
+let products = [];
+let editId = null;
+
+/* ---- AUTH ---- */
+onAuthStateChanged(auth, user => {
+  $('loginView').classList.toggle('hidden', !!user);
+  $('panelView').classList.toggle('hidden', !user);
+  if(user) loadProducts();
+});
+
+$('loginBtn').onclick = async () => {
+  $('loginErr').classList.add('hidden');
+  try{
+    await signInWithEmailAndPassword(auth, $('email').value.trim(), $('pass').value);
+  }catch(e){
+    $('loginErr').textContent = 'Giriş başarısız. E-posta veya şifre hatalı.';
+    $('loginErr').classList.remove('hidden');
+  }
+};
+$('pass').addEventListener('keydown', e => { if(e.key === 'Enter') $('loginBtn').click(); });
+$('logoutBtn').onclick = () => signOut(auth);
+
+/* ---- CLOUDINARY UPLOAD ---- */
+async function uploadImage(file){
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, { method: 'POST', body: fd });
+  if(!res.ok) throw new Error('Görsel yüklenemedi');
+  const data = await res.json();
+  return data.secure_url;
+}
+
+$('fImg').addEventListener('change', () => {
+  const f = $('fImg').files[0];
+  if(f){
+    $('imgPrev').src = URL.createObjectURL(f);
+    $('imgPrev').classList.remove('hidden');
+  }
+});
+
+/* ---- CRUD ---- */
+async function loadProducts(){
+  try{
+    const snap = await getDocs(query(collection(db, 'products'), orderBy('createdAt', 'desc')));
+    products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderList();
+    renderStats();
+    renderCatList();
+  }catch(e){
+    console.error(e);
+    $('prodList').innerHTML = '<div class="empty">Ürünler yüklenemedi. Firestore kurallarını kontrol edin.</div>';
+  }
+}
+
+const fmt = new Intl.NumberFormat('tr-TR');
+
+function renderList(){
+  if(!products.length){
+    $('prodList').innerHTML = '<div class="empty">Henüz ürün yok. Yukarıdan ilk ürünü ekle.</div>';
+    return;
+  }
+  $('prodList').innerHTML = products.map(p => `
+    <div class="p-row">
+      <div class="p-thumb">${p.image ? `<img src="${p.image}">` : 'Yok'}</div>
+      <div class="p-info">
+        <div class="name">${p.name}</div>
+        <div class="meta">${[p.brand, p.category].filter(Boolean).join(' · ') || '—'}</div>
+      </div>
+      <div class="p-price">${p.price ? fmt.format(p.price) + ' ₺' : '—'}</div>
+      <div class="p-actions">
+        <button class="icon-btn" data-edit="${p.id}">Düzenle</button>
+        <button class="icon-btn del" data-del="${p.id}">Sil</button>
+      </div>
+    </div>`).join('');
+}
+
+function renderStats(){
+  $('stTotal').textContent = products.length;
+  $('stCats').textContent = new Set(products.map(p => p.category).filter(Boolean)).size;
+}
+
+function renderCatList(){
+  const cats = [...new Set(products.map(p => p.category).filter(Boolean))];
+  $('catList').innerHTML = cats.map(c => `<option value="${c}">`).join('');
+}
+
+function toast(msg){
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2600);
+}
+
+function resetForm(){
+  editId = null;
+  $('formTitle').textContent = 'Yeni Ürün Ekle';
+  ['fName','fBrand','fCat','fPrice','fDesc'].forEach(id => $(id).value = '');
+  $('fImg').value = '';
+  $('imgPrev').classList.add('hidden');
+  $('imgPrev').removeAttribute('src');
+  $('cancelBtn').classList.add('hidden');
+  $('saveBtn').textContent = 'Kaydet';
+}
+
+$('cancelBtn').onclick = resetForm;
+
+$('saveBtn').onclick = async () => {
+  const name = $('fName').value.trim();
+  const category = $('fCat').value.trim();
+  if(!name || !category){ toast('Ürün adı ve kategori zorunlu'); return; }
+
+  $('saveBtn').textContent = 'Kaydediliyor…';
+  $('saveBtn').disabled = true;
+
+  try{
+    const data = {
+      name,
+      category,
+      brand: $('fBrand').value.trim(),
+      desc: $('fDesc').value.trim(),
+      price: $('fPrice').value ? Number($('fPrice').value) : null
+    };
+
+    const file = $('fImg').files[0];
+    if(file) data.image = await uploadImage(file);
+
+    if(editId){
+      await updateDoc(doc(db, 'products', editId), data);
+      toast('Ürün güncellendi');
+    }else{
+      data.createdAt = serverTimestamp();
+      await addDoc(collection(db, 'products'), data);
+      toast('Ürün eklendi');
+    }
+    resetForm();
+    loadProducts();
+  }catch(e){
+    console.error(e);
+    toast('Hata: ' + e.message);
+  }finally{
+    $('saveBtn').disabled = false;
+    if($('saveBtn').textContent.includes('Kaydediliyor')) $('saveBtn').textContent = editId ? 'Güncelle' : 'Kaydet';
+  }
+};
+
+$('prodList').addEventListener('click', async e => {
+  const editBtn = e.target.closest('[data-edit]');
+  const delBtn = e.target.closest('[data-del]');
+
+  if(editBtn){
+    const p = products.find(x => x.id === editBtn.dataset.edit);
+    if(!p) return;
+    editId = p.id;
+    $('formTitle').textContent = 'Ürünü Düzenle';
+    $('fName').value = p.name || '';
+    $('fBrand').value = p.brand || '';
+    $('fCat').value = p.category || '';
+    $('fPrice').value = p.price ?? '';
+    $('fDesc').value = p.desc || '';
+    if(p.image){ $('imgPrev').src = p.image; $('imgPrev').classList.remove('hidden'); }
+    $('cancelBtn').classList.remove('hidden');
+    $('saveBtn').textContent = 'Güncelle';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  if(delBtn){
+    if(!confirm('Bu ürün silinsin mi?')) return;
+    try{
+      await deleteDoc(doc(db, 'products', delBtn.dataset.del));
+      toast('Ürün silindi');
+      loadProducts();
+    }catch(err){
+      toast('Silinemedi: ' + err.message);
+    }
+  }
+});
+</script>
+</body>
+</html>
