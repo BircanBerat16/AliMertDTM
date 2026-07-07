@@ -109,6 +109,9 @@ section{padding:84px 0}
 .prod-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .prod-brand{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;font-family:'Archivo',sans-serif}
 .prod-kw{font-size:11.5px;font-weight:800;background:var(--ice);color:var(--navy);padding:3px 10px;border-radius:99px;font-family:'Archivo',sans-serif;white-space:nowrap}
+.kw-vars{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.kw-chip{font-size:12px;font-weight:800;font-family:'Archivo',sans-serif;background:#fff;border:1.5px solid var(--line);color:var(--navy);padding:5px 12px;border-radius:99px;cursor:pointer;transition:all .15s}
+.kw-chip.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .prod h3{font-size:16.5px;font-weight:700;margin:5px 0 8px;line-height:1.3}
 .prod .desc{font-size:13.5px;color:var(--gray);flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .prod-foot{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
@@ -359,19 +362,26 @@ function render(cat){
     grid.innerHTML = '<div class="prod-empty">Bu kategoride henüz ürün eklenmedi.</div>';
     return;
   }
-  grid.innerHTML = list.map(p => `
-    <div class="prod">
+  grid.innerHTML = list.map(p => {
+    const vars = (p.variants && p.variants.length) ? p.variants : (p.kw ? [{kw: p.kw, price: p.price ?? null}] : []);
+    const single = vars.length === 1;
+    const firstPrice = vars.length ? vars[0].price : p.price;
+    const priceHtml = v => v ? fmt.format(v) + ' ₺' : '<small>Fiyat için arayın</small>';
+    return `
+    <div class="prod" data-id="${p.id}" data-name="${p.name.replace(/"/g,'&quot;')}">
       <div class="prod-img">${p.image ? `<img src="${p.image}" alt="${p.name}" loading="lazy">` : '<span class="noimg">Görsel yok</span>'}</div>
       <div class="prod-body">
-        <div class="prod-top">${p.brand ? `<span class="prod-brand">${p.brand}</span>` : '<span></span>'}${p.kw ? `<span class="prod-kw">${p.kw} kW</span>` : ''}</div>
+        <div class="prod-top">${p.brand ? `<span class="prod-brand">${p.brand}</span>` : '<span></span>'}${single ? `<span class="prod-kw">${vars[0].kw} kW</span>` : ''}</div>
         <h3>${p.name}</h3>
         ${p.desc ? `<div class="desc">${p.desc}</div>` : ''}
+        ${vars.length > 1 ? `<div class="kw-vars">${vars.map((v,i) => `<button class="kw-chip${i===0?' active':''}" data-kw="${v.kw}" data-price="${v.price ?? ''}">${v.kw} kW</button>`).join('')}</div>` : ''}
         <div class="prod-foot">
-          <div class="prod-price">${p.price ? fmt.format(p.price) + ' ₺' : '<small>Fiyat için arayın</small>'}</div>
-          <a class="prod-ask" href="https://wa.me/905322832482?text=${encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">İncele</a>
+          <div class="prod-price">${priceHtml(firstPrice)}</div>
+          <a class="prod-ask" href="https://wa.me/905322832482?text=${encodeURIComponent('Merhaba, "' + p.name + (vars.length ? ' (' + vars[0].kw + ' kW)' : '') + '" ürünü hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">İncele</a>
         </div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function buildFilters(){
@@ -404,6 +414,19 @@ async function load(){
   }
 }
 load();
+
+// kW varyant seçimi
+grid.addEventListener('click', e => {
+  const chip = e.target.closest('.kw-chip');
+  if(!chip) return;
+  const card = chip.closest('.prod');
+  card.querySelectorAll('.kw-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  const price = chip.dataset.price;
+  card.querySelector('.prod-price').innerHTML = price ? fmt.format(Number(price)) + ' ₺' : '<small>Fiyat için arayın</small>';
+  const name = card.dataset.name;
+  card.querySelector('.prod-ask').href = 'https://wa.me/905322832482?text=' + encodeURIComponent('Merhaba, "' + name + ' (' + chip.dataset.kw + ' kW)" ürünü hakkında bilgi almak istiyorum.');
+});
 
 // Mobil menü
 document.getElementById('burger').addEventListener('click', () => {
