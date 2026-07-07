@@ -61,6 +61,9 @@ label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
 .icon-btn:hover{border-color:var(--blue);color:var(--blue)}
 .icon-btn.del:hover{border-color:var(--red);color:var(--red)}
 .empty{text-align:center;padding:40px;color:var(--gray);font-size:14px}
+.var-row{display:flex;gap:10px;margin-bottom:8px;align-items:center}
+.var-row input{flex:1}
+.var-row .rm{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:10px 14px;font-weight:800;color:var(--red);flex-shrink:0}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--black);color:#fff;padding:13px 24px;border-radius:99px;font-size:14px;font-weight:600;z-index:99;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 @media(max-width:640px){.form-grid{grid-template-columns:1fr}.p-price{display:none}}
 </style>
@@ -114,9 +117,10 @@ label{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}
         <label>Fiyat (₺) — boş bırakılırsa "Fiyat için arayın" yazar</label>
         <input id="fPrice" type="number" min="0" placeholder="Örn: 24500">
       </div>
-      <div>
-        <label>Kapasite (kW) — opsiyonel</label>
-        <input id="fKw" type="number" min="0" step="0.1" placeholder="Örn: 3.5">
+      <div class="full">
+        <label>kW Varyantları — opsiyonel (her varyanta ayrı fiyat girebilirsin)</label>
+        <div id="varRows"></div>
+        <button type="button" class="icon-btn" id="addVarBtn" style="margin-top:8px">+ Varyant Ekle</button>
       </div>
       <div class="full">
         <label>Açıklama</label>
@@ -190,6 +194,28 @@ $('loginBtn').onclick = async () => {
 $('pass').addEventListener('keydown', e => { if(e.key === 'Enter') $('loginBtn').click(); });
 $('logoutBtn').onclick = () => signOut(auth);
 
+/* ---- kW VARYANTLARI ---- */
+function addVarRow(kw = '', price = ''){
+  const row = document.createElement('div');
+  row.className = 'var-row';
+  row.innerHTML = `
+    <input type="number" min="0" step="0.1" class="v-kw" placeholder="kW (örn: 3.5)" value="${kw}">
+    <input type="number" min="0" class="v-price" placeholder="Fiyat ₺ (boş = arayın)" value="${price}">
+    <button type="button" class="rm">×</button>`;
+  row.querySelector('.rm').onclick = () => row.remove();
+  document.getElementById('varRows').appendChild(row);
+}
+document.getElementById('addVarBtn').onclick = () => addVarRow();
+
+function getVariants(){
+  return [...document.querySelectorAll('#varRows .var-row')]
+    .map(r => ({
+      kw: r.querySelector('.v-kw').value ? Number(r.querySelector('.v-kw').value) : null,
+      price: r.querySelector('.v-price').value ? Number(r.querySelector('.v-price').value) : null
+    }))
+    .filter(v => v.kw !== null);
+}
+
 /* ---- CLOUDINARY UPLOAD ---- */
 async function uploadImage(file){
   const fd = new FormData();
@@ -235,7 +261,7 @@ function renderList(){
       <div class="p-thumb">${p.image ? `<img src="${p.image}">` : 'Yok'}</div>
       <div class="p-info">
         <div class="name">${p.name}</div>
-        <div class="meta">${[p.brand, p.category, p.kw ? p.kw + ' kW' : ''].filter(Boolean).join(' · ') || '—'}</div>
+        <div class="meta">${[p.brand, p.category, (p.variants && p.variants.length) ? p.variants.map(v=>v.kw).join('/') + ' kW' : (p.kw ? p.kw + ' kW' : '')].filter(Boolean).join(' · ') || '—'}</div>
       </div>
       <div class="p-price">${p.price ? fmt.format(p.price) + ' ₺' : '—'}</div>
       <div class="p-actions">
@@ -266,8 +292,9 @@ function toast(msg){
 function resetForm(){
   editId = null;
   $('formTitle').textContent = 'Yeni Ürün Ekle';
-  ['fName','fBrand','fCat','fPrice','fKw','fDesc'].forEach(id => $(id).value = '');
+  ['fName','fBrand','fCat','fPrice','fDesc'].forEach(id => $(id).value = '');
   $('fImg').value = '';
+  document.getElementById('varRows').innerHTML = '';
   $('imgPrev').classList.add('hidden');
   $('imgPrev').removeAttribute('src');
   $('cancelBtn').classList.add('hidden');
@@ -291,7 +318,7 @@ $('saveBtn').onclick = async () => {
       brand: $('fBrand').value.trim(),
       desc: $('fDesc').value.trim(),
       price: $('fPrice').value ? Number($('fPrice').value) : null,
-      kw: $('fKw').value ? Number($('fKw').value) : null
+      variants: getVariants()
     };
 
     const file = $('fImg').files[0];
@@ -329,7 +356,9 @@ $('prodList').addEventListener('click', async e => {
     $('fBrand').value = p.brand || '';
     $('fCat').value = p.category || '';
     $('fPrice').value = p.price ?? '';
-    $('fKw').value = p.kw ?? '';
+    document.getElementById('varRows').innerHTML = '';
+    const vs = (p.variants && p.variants.length) ? p.variants : (p.kw ? [{kw: p.kw, price: null}] : []);
+    vs.forEach(v => addVarRow(v.kw ?? '', v.price ?? ''));
     $('fDesc').value = p.desc || '';
     if(p.image){ $('imgPrev').src = p.image; $('imgPrev').classList.remove('hidden'); }
     $('cancelBtn').classList.remove('hidden');
