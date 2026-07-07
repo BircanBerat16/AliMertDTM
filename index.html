@@ -103,7 +103,7 @@ section{padding:84px 0}
 .prod{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:box-shadow .25s,transform .25s;display:flex;flex-direction:column}
 .prod:hover{box-shadow:0 14px 36px rgba(10,31,51,.12);transform:translateY(-3px)}
 .prod-img{aspect-ratio:4/3;background:var(--ice-2);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.prod-img img{width:100%;height:100%;object-fit:cover}
+.prod-img img{width:100%;height:100%;object-fit:contain;padding:10px}
 .prod-img .noimg{color:#B9CEE2}
 .prod-body{padding:18px 20px 22px;display:flex;flex-direction:column;flex:1}
 .prod-brand{font-size:12px;font-weight:800;color:var(--blue);letter-spacing:.1em;text-transform:uppercase;font-family:'Archivo',sans-serif}
@@ -256,7 +256,7 @@ footer .f-logo span{color:var(--blue)}
   <div class="container">
     <div class="sec-head">
       <span class="tag">Ürünler</span>
-      <h2>Satışını yaptığımız cihazlar</h2>
+      <h2>Tüm ürünleri incele</h2>
       <p>Tüm ürünlerde montaj dahil fiyat için bize ulaşın.</p>
     </div>
     <div class="filter-row" id="filterRow">
@@ -366,7 +366,7 @@ function render(cat){
         ${p.desc ? `<div class="desc">${p.desc}</div>` : ''}
         <div class="prod-foot">
           <div class="prod-price">${p.price ? fmt.format(p.price) + ' ₺' : '<small>Fiyat için arayın</small>'}</div>
-          <a class="prod-ask" href="https://wa.me/905322832482?text=${encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">Sor</a>
+          <a class="prod-ask" href="https://wa.me/905322832482?text=${encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.')}" target="_blank" rel="noopener">İncele</a>
         </div>
       </div>
     </div>`).join('');
